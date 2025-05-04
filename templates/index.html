@@ -1,24 +1,73 @@
 <!DOCTYPE html>
-<html lang="es">    
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <title>WeatherApp</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head> 
-<body>
+</head>
+<body class="{{ tema }}">
     <h1>Weather</h1>
     <form method="POST">
-        <input type="text" name="city" placeholder="Enter city" required>
-        <div name="butttons">
-            <button type="submit">Get Weather</button>
-            <button type="submit" name="clear">Clear</button>
+        <div class="search-container">
+            <img src="{{ url_for('static',filename='lupa.png') }}" alt="search icon" class="search-icon">
+            <input type="text" name="city" placeholder="Search city" autocomplete="off">
+            <button type="submit">Search</button>
         </div>
     </form>
+
+    {% if error %}
+    <div class="error-message">
+        {{ error }}
+    </div>
+    {% endif %}
+
     {% if weather %}
-    <h2>Weather in {{ weather.city }}</h2>
-    <p>Temperature: {{ weather.temperature }}°C</p>
-    <p>Description: {{ weather.description }}</p>
-    <p>Humidity: {{ weather.humidity }}%</p>
+    <div class="weather-info">
+        <div class="header">
+            <div class="city">{{ weather.city }}</div>
+            <div class="country">{{ weather.country}}</div>
+        </div>
+        <div class="tmp-icon">
+            <div class="temp">
+                {{ weather.temperature }}°C
+            </div>
+            <div class="icon">
+                <img src="{{ weather.img }}" alt="clima">
+            </div>
+        </div>
+        <div class="desc">
+            <div class="left">
+                <div>{{ weather.description }}</div>
+                <div>Feels like {{ weather.feels_like }}°C</div>
+            </div>
+            <div class="right">
+                <div>Min: {{ weather.min }}°C</div>
+                <div>Max: {{ weather.max }}°C</div>
+            </div>
+        </div>
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-icon"><img src="{{ url_for('static',filename='ventoso.png') }}"></div>
+                <div class="value">{{ weather.wind_speed }} Km/h</div>
+                <div class="label">Wind</div>
+            </div>
+            <div class="stat">
+                <div class="stat-icon"> <img src="{{ url_for('static',filename='medir.png') }}"></div>
+                <div class="value">{{ weather.pressure}} hPa</div>
+                <div class="label">Pressure</div>
+            </div>
+            <div class="stat">
+                <div class="stat-icon"><img src="{{ url_for('static',filename='nube.png') }}"></div>
+                <div class="value">{{ weather.clouds }}%</div>
+                <div class="label">Clouds</div>
+            </div>
+            <div class="stat">
+                <div class="stat-icon"><img src="{{ url_for('static',filename='soltar.png') }}"></div>
+                <div class="value">{{ weather.humidity }}%</div>
+                <div class="label">Humidity</div>
+            </div>
+        </div>
+    </div>
     {% endif %}
 </body>
 </html>
